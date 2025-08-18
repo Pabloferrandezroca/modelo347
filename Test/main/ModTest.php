@@ -31,12 +31,12 @@ final class ModTest extends TestCase
 {
     use LogErrorsTrait;
 
-    public function testPurchasesHeaderHTMLMod()
+    public function testPurchasesHeaderHTMLMod(): void
     {
         new PurchasesHeaderHTMLMod();
     }
 
-    public function SalesHeaderHTMLMod()
+    public function SalesHeaderHTMLMod(): void
     {
         new SalesHeaderHTMLMod();
     }

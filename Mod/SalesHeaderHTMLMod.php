@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of Modelo347 plugin for FacturaScripts
- * Copyright (C) 2020-2023 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2020-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -20,11 +20,8 @@
 namespace FacturaScripts\Plugins\Modelo347\Mod;
 
 use FacturaScripts\Core\Contract\SalesModInterface;
-use FacturaScripts\Core\Translator;
 use FacturaScripts\Core\Model\Base\SalesDocument;
-use FacturaScripts\Core\Model\User;
 use FacturaScripts\Core\Tools;
-
 
 /**
  * Add new fields in the modal window of the document header
@@ -68,14 +65,13 @@ class SalesHeaderHTMLMod implements SalesModInterface
     public function renderField(SalesDocument $model, string $field): ?string
     {
         if ($field == 'excluir347') {
-            $i18n = new Translator();
-            return $this->excluir347($i18n, $model);
+            return $this->excluir347($model);
         }
 
         return null;
     }
 
-    private static function excluir347(Translator $i18n, SalesDocument $model): string
+    private static function excluir347(SalesDocument $model): string
     {
         if (false === property_exists($model, 'excluir347')) {
             return '';
@@ -85,13 +81,13 @@ class SalesHeaderHTMLMod implements SalesModInterface
         foreach (['false', 'true'] as $row) {
             $txt = ($row === 'true') ? 'yes' : 'no';
             $options[] = ($row == $model->excluir347) ?
-                '<option value="' . $row . '" selected>' . $i18n->trans($txt) . '</option>' :
-                '<option value="' . $row . '">' . $i18n->trans($txt) . '</option>';
+                '<option value="' . $row . '" selected>' . Tools::trans($txt) . '</option>' :
+                '<option value="' . $row . '">' . Tools::trans($txt) . '</option>';
         }
 
         $attributes = $model->editable ? 'name="excluir347" required=""' : 'disabled=""';
         return '<div class="col-sm-6">'
-            . '<div class="mb-3">' . $i18n->trans('exclude-347')
+            . '<div class="mb-3">' . Tools::trans('exclude-347')
             . '<select ' . $attributes . ' class="form-select"/>' . implode('', $options) . '</select>'
             . '</div>'
             . '</div>';

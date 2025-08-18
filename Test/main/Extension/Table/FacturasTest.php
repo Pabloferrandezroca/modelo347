@@ -43,7 +43,7 @@ final class FacturasTest extends TestCase
         self::removeTaxRegularization();
     }
 
-    public function testExistsPropertyFacturaCliente()
+    public function testExistsPropertyFacturaCliente(): void
     {
         // crear el cliente
         $customer = new Cliente();
@@ -77,7 +77,7 @@ final class FacturasTest extends TestCase
         $this->assertTrue($customer->delete(), 'cant-delete-customer');
     }
 
-    public function testExistsPropertyFacturaProveedor()
+    public function testExistsPropertyFacturaProveedor(): void
     {
         // crear proveedor
         $suplier = new Proveedor();

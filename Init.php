@@ -22,11 +22,8 @@ namespace FacturaScripts\Plugins\Modelo347;
 use FacturaScripts\Core\Lib\AjaxForms\PurchasesHeaderHTML;
 use FacturaScripts\Core\Lib\AjaxForms\SalesHeaderHTML;
 use FacturaScripts\Core\Template\InitClass;
-use FacturaScripts\Core\Tools;
-
 use FacturaScripts\Dinamic\Model\FacturaCliente;
 use FacturaScripts\Dinamic\Model\FacturaProveedor;
-use FacturaScripts\Dinamic\Model\User;
 
 /**
  * Description of Init
@@ -37,10 +34,13 @@ final class Init extends InitClass
 {
     public function init(): void
     {
+        // extensiones
         $this->loadExtension(new Extension\Model\Cliente());
         $this->loadExtension(new Extension\Model\FacturaCliente());
         $this->loadExtension(new Extension\Model\FacturaProveedor());
         $this->loadExtension(new Extension\Model\Proveedor());
+
+        // mods
         PurchasesHeaderHTML::addMod(new Mod\PurchasesHeaderHTMLMod());
         SalesHeaderHTML::addMod(new Mod\SalesHeaderHTMLMod());
     }
@@ -51,7 +51,6 @@ final class Init extends InitClass
 
     public function update(): void
     {
-        new User();
         new FacturaCliente();
         new FacturaProveedor();
     }

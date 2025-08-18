@@ -20,11 +20,8 @@
 namespace FacturaScripts\Plugins\Modelo347\Mod;
 
 use FacturaScripts\Core\Contract\PurchasesModInterface;
-use FacturaScripts\Core\Translator;
 use FacturaScripts\Core\Model\Base\PurchaseDocument;
-use FacturaScripts\Core\Model\User;
 use FacturaScripts\Core\Tools;
-
 
 /**
  * Add new fields in the modal window of the document header
@@ -35,7 +32,7 @@ use FacturaScripts\Core\Tools;
  */
 class PurchasesHeaderHTMLMod implements PurchasesModInterface
 {
-    public function apply(PurchaseDocument &$model, array $formData):void
+    public function apply(PurchaseDocument &$model, array $formData): void
     {
         if (property_exists($model, 'excluir347')) {
             $model->excluir347 = ($formData['excluir347'] ?? '') === 'true';
@@ -63,8 +60,7 @@ class PurchasesHeaderHTMLMod implements PurchasesModInterface
     public function renderField(PurchaseDocument $model, string $field): ?string
     {
         if ($field == 'excluir347') {
-            $i18n = new Translator();
-            return $this->excluir347($i18n, $model);
+            return $this->excluir347($model);
         }
 
         return null;
@@ -75,7 +71,7 @@ class PurchasesHeaderHTMLMod implements PurchasesModInterface
         return ['excluir347'];
     }
 
-    private static function excluir347(Translator $i18n, PurchaseDocument $model): string
+    private static function excluir347(PurchaseDocument $model): string
     {
         if (false === property_exists($model, 'excluir347')) {
             return '';
@@ -85,13 +81,13 @@ class PurchasesHeaderHTMLMod implements PurchasesModInterface
         foreach (['false', 'true'] as $row) {
             $txt = ($row === 'true') ? 'yes' : 'no';
             $options[] = ($row == $model->excluir347) ?
-                '<option value="' . $row . '" selected>' . $i18n->trans($txt) . '</option>' :
-                '<option value="' . $row . '">' . $i18n->trans($txt) . '</option>';
+                '<option value="' . $row . '" selected>' . Tools::trans($txt) . '</option>' :
+                '<option value="' . $row . '">' . Tools::trans($txt) . '</option>';
         }
 
         $attributes = $model->editable ? 'name="excluir347" required=""' : 'disabled=""';
         return '<div class="col-sm-6">'
-            . '<div class="mb-3">' . $i18n->trans('exclude-347')
+            . '<div class="mb-3">' . Tools::trans('exclude-347')
             . '<select ' . $attributes . ' class="form-select"/>' . implode('', $options) . '</select>'
             . '</div>'
             . '</div>';
