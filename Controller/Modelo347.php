@@ -323,7 +323,7 @@ class Modelo347 extends Controller
                 // buscamos el cliente de la subcuenta
                 $cliente = new Cliente();
                 $where = [new DataBaseWhere('codsubcuenta', $row['codsubcuenta'])];
-                if (false === $cliente->loadFromCode('', $where)) {
+                if (false === $cliente->loadWhere($where)) {
                     // no se ha encontrado el cliente, saltamos
                     continue;
                 }
@@ -389,7 +389,7 @@ class Modelo347 extends Controller
             ];
 
             $cliente = new Cliente();
-            if ($cliente->loadFromCode($codcliente)) {
+            if ($cliente->load($codcliente)) {
                 $dir = $cliente->getDefaultAddress();
                 $items[$codcliente]['cifnif'] = $cliente->cifnif;
                 $items[$codcliente]['cliente'] = $cliente->razonsocial;
@@ -457,7 +457,7 @@ class Modelo347 extends Controller
                 // buscamos el proveedor de la subcuenta
                 $proveedor = new Proveedor();
                 $where = [new DataBaseWhere('codsubcuenta', $row['codsubcuenta'])];
-                if (false === $proveedor->loadFromCode('', $where)) {
+                if (false === $proveedor->loadWhere($where)) {
                     // no existe, saltamos
                     continue;
                 }
@@ -524,7 +524,7 @@ class Modelo347 extends Controller
             ];
 
             $proveedor = new Proveedor();
-            if ($proveedor->loadFromCode($codproveedor)) {
+            if ($proveedor->load($codproveedor)) {
                 $dir = $proveedor->getDefaultAddress();
                 $items[$codproveedor]['cifnif'] = $proveedor->cifnif;
                 $items[$codproveedor]['proveedor'] = $proveedor->razonsocial;

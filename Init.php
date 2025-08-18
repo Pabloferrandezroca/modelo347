@@ -19,9 +19,11 @@
 
 namespace FacturaScripts\Plugins\Modelo347;
 
-use FacturaScripts\Core\Base\AjaxForms\PurchasesHeaderHTML;
-use FacturaScripts\Core\Base\AjaxForms\SalesHeaderHTML;
+use FacturaScripts\Core\Lib\AjaxForms\PurchasesHeaderHTML;
+use FacturaScripts\Core\Lib\AjaxForms\SalesHeaderHTML;
 use FacturaScripts\Core\Template\InitClass;
+use FacturaScripts\Core\Tools;
+
 use FacturaScripts\Dinamic\Model\FacturaCliente;
 use FacturaScripts\Dinamic\Model\FacturaProveedor;
 use FacturaScripts\Dinamic\Model\User;

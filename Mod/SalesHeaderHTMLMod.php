@@ -19,10 +19,12 @@
 
 namespace FacturaScripts\Plugins\Modelo347\Mod;
 
-use FacturaScripts\Core\Base\Contract\SalesModInterface;
-use FacturaScripts\Core\Base\Translator;
+use FacturaScripts\Core\Contract\SalesModInterface;
+use FacturaScripts\Core\Translator;
 use FacturaScripts\Core\Model\Base\SalesDocument;
 use FacturaScripts\Core\Model\User;
+use FacturaScripts\Core\Tools;
+
 
 /**
  * Add new fields in the modal window of the document header
@@ -33,14 +35,14 @@ use FacturaScripts\Core\Model\User;
  */
 class SalesHeaderHTMLMod implements SalesModInterface
 {
-    public function apply(SalesDocument &$model, array $formData, User $user)
+    public function apply(SalesDocument &$model, array $formData): void
     {
         if (property_exists($model, 'excluir347')) {
             $model->excluir347 = ($formData['excluir347'] ?? '') === 'true';
         }
     }
 
-    public function applyBefore(SalesDocument &$model, array $formData, User $user)
+    public function applyBefore(SalesDocument &$model, array $formData): void
     {
     }
 
@@ -63,9 +65,10 @@ class SalesHeaderHTMLMod implements SalesModInterface
         return ['excluir347'];
     }
 
-    public function renderField(Translator $i18n, SalesDocument $model, string $field): ?string
+    public function renderField(SalesDocument $model, string $field): ?string
     {
         if ($field == 'excluir347') {
+            $i18n = new Translator();
             return $this->excluir347($i18n, $model);
         }
 
@@ -88,8 +91,8 @@ class SalesHeaderHTMLMod implements SalesModInterface
 
         $attributes = $model->editable ? 'name="excluir347" required=""' : 'disabled=""';
         return '<div class="col-sm-6">'
-            . '<div class="form-group">' . $i18n->trans('exclude-347')
-            . '<select ' . $attributes . ' class="form-control"/>' . implode('', $options) . '</select>'
+            . '<div class="mb-3">' . $i18n->trans('exclude-347')
+            . '<select ' . $attributes . ' class="form-select"/>' . implode('', $options) . '</select>'
             . '</div>'
             . '</div>';
     }

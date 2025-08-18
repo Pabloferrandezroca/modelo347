@@ -98,7 +98,7 @@ class Txt347Export
     protected static function loadCompany(): void
     {
         self::$company = new Empresa();
-        self::$company->loadFromCode(self::$exercise->idempresa);
+        self::$company->load(self::$exercise->idempresa);
     }
 
     protected static function getCompanyData(): string
@@ -175,13 +175,13 @@ class Txt347Export
     protected static function loadExercise(string $codejercicio): void
     {
         self::$exercise = new Ejercicio();
-        self::$exercise->loadFromCode($codejercicio);
+        self::$exercise->load($codejercicio);
     }
 
     protected static function getPais(string $codpais): string
     {
         $paisModel = new Pais();
-        if ($paisModel->loadFromCode($codpais) && $paisModel->codiso !== 'ES') {
+        if ($paisModel->load($codpais) && $paisModel->codiso !== 'ES') {
             return self::formatString($paisModel->codiso, 2, '', STR_PAD_LEFT);
         }
 

@@ -24,11 +24,11 @@
         </div>
         <form method="post" name="modelo347">
             <input type="hidden" name="activetab" value="{{ fsc.activetab }}">
-            <div class="form-row align-items-end">
+            <div class="row align-items-end">
                 <div class="col-sm">
-                    <div class="form-group">
+                    <div class="mb-3">
                         {{ trans('exercise') }}
-                        <select name="codejercicio" class="form-control" required onchange="this.form.submit()">
+                        <select name="codejercicio" class="form-select" required onchange="this.form.submit()">
                             {% for company in fsc.empresa.all() %}
                                 <optgroup label="{{ company.nombrecorto }}">
                                     {% for exercise in fsc.allExercises(company.idempresa) %}
@@ -45,9 +45,9 @@
                 </div>
                 {# Examine Input #}
                 <div class="col-sm">
-                    <div class="form-group">
+                    <div class="mb-3">
                         {{ trans('examine') }}
-                        <select name="examine" class="form-control" required onchange="this.form.submit()">
+                        <select name="examine" class="form-select" required onchange="this.form.submit()">
                             {% for type in fsc.allExamine() %}
                                 {% if type == fsc.examine %}
                                     <option value="{{ type }}" selected>{{ trans(type) }}</option>
@@ -60,7 +60,7 @@
                 </div>
                 {# Amount Input #}
                 <div class="col-sm">
-                    <div class="form-group">
+                    <div class="mb-3">
                         {{ trans('amount') }}
                         <input type="number" min="0" step="any" name="amount" value="{{ fsc.amount }}"
                                class="form-control" required/>
@@ -68,9 +68,9 @@
                 </div>
                 {# Grouping Type Input #}
                 <div class="col-sm">
-                    <div class="form-group">
+                    <div class="mb-3">
                         {{ trans('grouping-type') }}
-                        <select name="grouping" class="form-control" required onchange="this.form.submit()">
+                        <select name="grouping" class="form-select" required onchange="this.form.submit()">
                             {% for groupby in fsc.allGroupBy() %}
                                 {% if groupby == fsc.grouping %}
                                     <option value="{{ groupby }}" selected>{{ trans(groupby) }}</option>
@@ -83,7 +83,7 @@
                 </div>
                 {# Exclude IRPF Input #}
                 <div class="col-sm">
-                    <div class="form-group form-check">
+                    <div class="mb-3 form-check">
                         {% if fsc.excludeIrpf %}
                             <input type="checkbox" name="excludeirpf" value="1" id="checkboxirpf"
                                    class="form-check-input" checked/>
@@ -101,16 +101,16 @@
                             <i class="fa-solid fa-eye fa-fw"></i> {{ trans('preview') }}
                         </button>
                         <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown"
                                     aria-expanded="false">
                                 <i class="fa-solid fa-download fa-fw"></i> {{ trans('download') }}
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <button type="submit" name="action" value="download-excel" class="dropdown-item">
-                                    <i class="fa-solid fa-file-excel fa-fw mr-1"></i> {{ trans('spreadsheet-xls') }}
+                                    <i class="fa-solid fa-file-excel fa-fw me-1"></i> {{ trans('spreadsheet-xls') }}
                                 </button>
                                 <button type="submit" name="action" value="download-txt" class="dropdown-item">
-                                    <i class="fa-regular fa-file-alt fa-fw mr-1"></i> {{ trans('txt-for-treasury') }}
+                                    <i class="fa-regular fa-file-alt fa-fw me-1"></i> {{ trans('txt-for-treasury') }}
                                 </button>
                             </div>
                         </div>
@@ -123,14 +123,14 @@
     <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
             <a class="nav-link {{ fsc.activetab == 'customers' ? 'active' : '' }}" onclick="activeTab('customers')"
-               id="customers-tab" data-toggle="tab" href="#customers" role="tab" aria-controls="customers"
+               id="customers-tab" data-bs-toggle="tab" href="#customers" role="tab" aria-controls="customers"
                aria-selected="true">
                 {{ trans('customers') }}
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link {{ fsc.activetab == 'suppliers' ? 'active' : '' }}" onclick="activeTab('suppliers')"
-               id="suppliers-tab" data-toggle="tab" href="#suppliers" role="tab" aria-controls="suppliers"
+               id="suppliers-tab" data-bs-toggle="tab" href="#suppliers" role="tab" aria-controls="suppliers"
                aria-selected="false">
                 {{ trans('suppliers') }}
             </a>
@@ -161,11 +161,11 @@
                 <th>{{ trans('zip-code') }}</th>
                 <th>{{ trans('city') }}</th>
                 <th>{{ trans('province') }}</th>
-                <th class="text-right">{{ trans('first-trimester') }}</th>
-                <th class="text-right">{{ trans('second-trimester') }}</th>
-                <th class="text-right">{{ trans('third-trimester') }}</th>
-                <th class="text-right">{{ trans('fourth-trimester') }}</th>
-                <th class="text-right">{{ trans('total') }}</th>
+                <th class="text-end">{{ trans('first-trimester') }}</th>
+                <th class="text-end">{{ trans('second-trimester') }}</th>
+                <th class="text-end">{{ trans('third-trimester') }}</th>
+                <th class="text-end">{{ trans('fourth-trimester') }}</th>
+                <th class="text-end">{{ trans('total') }}</th>
             </tr>
             </thead>
             <tbody>
@@ -176,20 +176,20 @@
                     <td>{{ row.codpostal }}</td>
                     <td>{{ row.ciudad | raw }}</td>
                     <td>{{ row.provincia | raw }}</td>
-                    <td class="text-right text-nowrap">{{ money(row.t1) }}</td>
-                    <td class="text-right text-nowrap">{{ money(row.t2) }}</td>
-                    <td class="text-right text-nowrap">{{ money(row.t3) }}</td>
-                    <td class="text-right text-nowrap">{{ money(row.t4) }}</td>
-                    <td class="text-right text-nowrap">{{ money(row.total) }}</td>
+                    <td class="text-end text-nowrap">{{ money(row.t1) }}</td>
+                    <td class="text-end text-nowrap">{{ money(row.t2) }}</td>
+                    <td class="text-end text-nowrap">{{ money(row.t3) }}</td>
+                    <td class="text-end text-nowrap">{{ money(row.t4) }}</td>
+                    <td class="text-end text-nowrap">{{ money(row.total) }}</td>
                 </tr>
             {% endfor %}
             <tr class="table-warning">
                 <td colspan="5"></td>
-                <td class="text-right text-nowrap">{{ money(fsc.customersTotals.t1) }}</td>
-                <td class="text-right text-nowrap">{{ money(fsc.customersTotals.t2) }}</td>
-                <td class="text-right text-nowrap">{{ money(fsc.customersTotals.t3) }}</td>
-                <td class="text-right text-nowrap">{{ money(fsc.customersTotals.t4) }}</td>
-                <td class="text-right text-nowrap">{{ money(fsc.customersTotals.total) }}</td>
+                <td class="text-end text-nowrap">{{ money(fsc.customersTotals.t1) }}</td>
+                <td class="text-end text-nowrap">{{ money(fsc.customersTotals.t2) }}</td>
+                <td class="text-end text-nowrap">{{ money(fsc.customersTotals.t3) }}</td>
+                <td class="text-end text-nowrap">{{ money(fsc.customersTotals.t4) }}</td>
+                <td class="text-end text-nowrap">{{ money(fsc.customersTotals.total) }}</td>
             </tr>
             </tbody>
         </table>
@@ -206,11 +206,11 @@
                 <th>{{ trans('zip-code') }}</th>
                 <th>{{ trans('city') }}</th>
                 <th>{{ trans('province') }}</th>
-                <th class="text-right">{{ trans('first-trimester') }}</th>
-                <th class="text-right">{{ trans('second-trimester') }}</th>
-                <th class="text-right">{{ trans('third-trimester') }}</th>
-                <th class="text-right">{{ trans('fourth-trimester') }}</th>
-                <th class="text-right">{{ trans('total') }}</th>
+                <th class="text-end">{{ trans('first-trimester') }}</th>
+                <th class="text-end">{{ trans('second-trimester') }}</th>
+                <th class="text-end">{{ trans('third-trimester') }}</th>
+                <th class="text-end">{{ trans('fourth-trimester') }}</th>
+                <th class="text-end">{{ trans('total') }}</th>
             </tr>
             </thead>
             <tbody>
@@ -221,20 +221,20 @@
                     <td>{{ row.codpostal }}</td>
                     <td>{{ row.ciudad | raw }}</td>
                     <td>{{ row.provincia | raw }}</td>
-                    <td class="text-right text-nowrap">{{ money(row.t1) }}</td>
-                    <td class="text-right text-nowrap">{{ money(row.t2) }}</td>
-                    <td class="text-right text-nowrap">{{ money(row.t3) }}</td>
-                    <td class="text-right text-nowrap">{{ money(row.t4) }}</td>
-                    <td class="text-right text-nowrap">{{ money(row.total) }}</td>
+                    <td class="text-end text-nowrap">{{ money(row.t1) }}</td>
+                    <td class="text-end text-nowrap">{{ money(row.t2) }}</td>
+                    <td class="text-end text-nowrap">{{ money(row.t3) }}</td>
+                    <td class="text-end text-nowrap">{{ money(row.t4) }}</td>
+                    <td class="text-end text-nowrap">{{ money(row.total) }}</td>
                 </tr>
             {% endfor %}
             <tr class="table-warning">
                 <td colspan="5"></td>
-                <td class="text-right text-nowrap">{{ money(fsc.suppliersTotals.t1) }}</td>
-                <td class="text-right text-nowrap">{{ money(fsc.suppliersTotals.t2) }}</td>
-                <td class="text-right text-nowrap">{{ money(fsc.suppliersTotals.t3) }}</td>
-                <td class="text-right text-nowrap">{{ money(fsc.suppliersTotals.t4) }}</td>
-                <td class="text-right text-nowrap">{{ money(fsc.suppliersTotals.total) }}</td>
+                <td class="text-end text-nowrap">{{ money(fsc.suppliersTotals.t1) }}</td>
+                <td class="text-end text-nowrap">{{ money(fsc.suppliersTotals.t2) }}</td>
+                <td class="text-end text-nowrap">{{ money(fsc.suppliersTotals.t3) }}</td>
+                <td class="text-end text-nowrap">{{ money(fsc.suppliersTotals.t4) }}</td>
+                <td class="text-end text-nowrap">{{ money(fsc.suppliersTotals.total) }}</td>
             </tr>
             </tbody>
         </table>

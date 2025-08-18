@@ -18,6 +18,9 @@
  */
 namespace FacturaScripts\Plugins\Modelo347\Extension\Model;
 
+use FacturaScripts\Core\Tools;
+
+
 use Closure;
 
 /**

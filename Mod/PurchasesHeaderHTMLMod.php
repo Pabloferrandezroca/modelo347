@@ -19,10 +19,12 @@
 
 namespace FacturaScripts\Plugins\Modelo347\Mod;
 
-use FacturaScripts\Core\Base\Contract\PurchasesModInterface;
-use FacturaScripts\Core\Base\Translator;
+use FacturaScripts\Core\Contract\PurchasesModInterface;
+use FacturaScripts\Core\Translator;
 use FacturaScripts\Core\Model\Base\PurchaseDocument;
 use FacturaScripts\Core\Model\User;
+use FacturaScripts\Core\Tools;
+
 
 /**
  * Add new fields in the modal window of the document header
@@ -33,14 +35,14 @@ use FacturaScripts\Core\Model\User;
  */
 class PurchasesHeaderHTMLMod implements PurchasesModInterface
 {
-    public function apply(PurchaseDocument &$model, array $formData, User $user)
+    public function apply(PurchaseDocument &$model, array $formData):void
     {
         if (property_exists($model, 'excluir347')) {
             $model->excluir347 = ($formData['excluir347'] ?? '') === 'true';
         }
     }
 
-    public function applyBefore(PurchaseDocument &$model, array $formData, User $user)
+    public function applyBefore(PurchaseDocument &$model, array $formData): void
     {
     }
 
@@ -58,9 +60,10 @@ class PurchasesHeaderHTMLMod implements PurchasesModInterface
         return [];
     }
 
-    public function renderField(Translator $i18n, PurchaseDocument $model, string $field): ?string
+    public function renderField(PurchaseDocument $model, string $field): ?string
     {
         if ($field == 'excluir347') {
+            $i18n = new Translator();
             return $this->excluir347($i18n, $model);
         }
 
@@ -88,8 +91,8 @@ class PurchasesHeaderHTMLMod implements PurchasesModInterface
 
         $attributes = $model->editable ? 'name="excluir347" required=""' : 'disabled=""';
         return '<div class="col-sm-6">'
-            . '<div class="form-group">' . $i18n->trans('exclude-347')
-            . '<select ' . $attributes . ' class="form-control"/>' . implode('', $options) . '</select>'
+            . '<div class="mb-3">' . $i18n->trans('exclude-347')
+            . '<select ' . $attributes . ' class="form-select"/>' . implode('', $options) . '</select>'
             . '</div>'
             . '</div>';
     }

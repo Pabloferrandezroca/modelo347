@@ -63,12 +63,12 @@ final class FacturasTest extends TestCase
         $this->assertTrue($invoice->exists(), 'invoice-not-exists');
 
         // comprobar el campo
-        $this->assertTrue($invoice->loadFromCode($invoice->idfactura), 'cant-create-load');
+        $this->assertTrue($invoice->load($invoice->idfactura), 'cant-create-load');
         $this->assertTrue($invoice->excluir347, 'value-not-saved');
         $invoice->excluir347 = false;
         $this->assertTrue($invoice->save(), 'cant-create-invoice');
 
-        $this->assertTrue($invoice->loadFromCode($invoice->idfactura), 'cant-create-load');
+        $this->assertTrue($invoice->load($invoice->idfactura), 'cant-create-load');
         $this->assertFalse($invoice->excluir347, 'value-not-saved');
 
         // eliminar la factura
@@ -97,12 +97,12 @@ final class FacturasTest extends TestCase
         $this->assertTrue($invoice->exists(), 'invoice-not-exists');
 
         // comprobar el campo
-        $this->assertTrue($invoice->loadFromCode($invoice->idfactura), 'cant-create-load');
+        $this->assertTrue($invoice->load($invoice->idfactura), 'cant-create-load');
         $this->assertTrue($invoice->excluir347, 'value-not-saved');
         $invoice->excluir347 = false;
         $this->assertTrue($invoice->save(), 'cant-create-invoice');
 
-        $this->assertTrue($invoice->loadFromCode($invoice->idfactura), 'cant-create-load');
+        $this->assertTrue($invoice->load($invoice->idfactura), 'cant-create-load');
         $this->assertFalse($invoice->excluir347, 'value-not-saved');
 
         // eliminar la factura
