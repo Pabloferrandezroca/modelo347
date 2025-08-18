@@ -74,7 +74,7 @@ class SalesHeaderHTMLMod implements SalesModInterface
 
     private static function excluir347(Translator $i18n, SalesDocument $model): string
     {
-        if (false === property_exists($model, 'excluir347') || empty($model->primaryColumnValue())) {
+        if (false === property_exists($model, 'excluir347')) {
             return '';
         }
 

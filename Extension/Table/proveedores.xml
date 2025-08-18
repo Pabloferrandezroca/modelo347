@@ -16,10 +16,10 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-    Document   : facturasprov.xml
-    Author     : Jose Antonio Cuello    <yopli2000@gmail.com>
+    Document   : proveedores.xml
+    Author     : Dainier Rojas Jimenez  <danredjim@gmail.com>
     Description:
-        Add fields to basic structure of facturasprov table.
+        Add fields to basic structure of proveedores table.
         - excluir347: indicates if the document should be excluded from 347.
 -->
 <table>
