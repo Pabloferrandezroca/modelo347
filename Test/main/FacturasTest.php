@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of Modelo347 plugin for FacturaScripts
- * Copyright (C) 2024 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2024-2026 Carlos Garcia Gomez <carlos@facturascripts.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -80,16 +80,16 @@ final class FacturasTest extends TestCase
     public function testExistsPropertyFacturaProveedor(): void
     {
         // crear proveedor
-        $suplier = new Proveedor();
-        $suplier->cifnif = 'B' . mt_rand(1, 999999);
-        $suplier->nombre = 'suplier Rand ' . mt_rand(1, 99999);
-        $suplier->observaciones = 'Test';
-        $suplier->razonsocial = 'Empresa ' . mt_rand(1, 99999);
-        $this->assertTrue($suplier->save(), 'cant-create-suplier');
+        $supplier = new Proveedor();
+        $supplier->cifnif = 'B' . mt_rand(1, 999999);
+        $supplier->nombre = 'suplier Rand ' . mt_rand(1, 99999);
+        $supplier->observaciones = 'Test';
+        $supplier->razonsocial = 'Empresa ' . mt_rand(1, 99999);
+        $this->assertTrue($supplier->save(), 'cant-create-suplier');
 
         // crear la factura de proveedor
         $invoice = new FacturaProveedor();
-        $invoice->setSubject($suplier);
+        $invoice->setSubject($supplier);
         $invoice->numero2 = 'INV-' . mt_rand(1, 99999) . '-' . mt_rand(1, 99999);
         $invoice->observaciones = 'Test';
         $invoice->excluir347 = true;
@@ -107,8 +107,8 @@ final class FacturasTest extends TestCase
 
         // eliminar la factura
         $this->assertTrue($invoice->delete(), 'cant-delete-invoice');
-        $this->assertTrue($suplier->getDefaultAddress()->delete());
-        $this->assertTrue($suplier->delete(), 'cant-delete-suplier');
+        $this->assertTrue($supplier->getDefaultAddress()->delete());
+        $this->assertTrue($supplier->delete(), 'cant-delete-suplier');
     }
 
     protected function tearDown(): void

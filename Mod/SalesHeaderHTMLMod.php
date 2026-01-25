@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of Modelo347 plugin for FacturaScripts
- * Copyright (C) 2020-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2020-2026 Carlos Garcia Gomez <carlos@facturascripts.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -34,7 +34,7 @@ class SalesHeaderHTMLMod implements SalesModInterface
 {
     public function apply(SalesDocument &$model, array $formData): void
     {
-        if (property_exists($model, 'excluir347')) {
+        if ($model->hasColumn('excluir347')) {
             $model->excluir347 = ($formData['excluir347'] ?? '') === 'true';
         }
     }
@@ -73,7 +73,7 @@ class SalesHeaderHTMLMod implements SalesModInterface
 
     private static function excluir347(SalesDocument $model): string
     {
-        if (false === property_exists($model, 'excluir347')) {
+        if (false === $model->hasColumn('excluir347')) {
             return '';
         }
 

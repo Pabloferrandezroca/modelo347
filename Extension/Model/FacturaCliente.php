@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of FacturaScripts
- * Copyright (C) 2017-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2017-2026 Carlos Garcia Gomez <carlos@facturascripts.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -16,10 +16,8 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 namespace FacturaScripts\Plugins\Modelo347\Extension\Model;
-
-use FacturaScripts\Core\Tools;
-
 
 use Closure;
 
@@ -43,7 +41,7 @@ class FacturaCliente
     public function setSubject(): Closure
     {
         return function ($subject) {
-            if (property_exists($subject, 'excluir347')) {
+            if ($subject->hasColumn('excluir347')) {
                 $this->excluir347 = $subject->excluir347;
             }
         };

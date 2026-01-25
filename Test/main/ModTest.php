@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of Modelo347 plugin for FacturaScripts
- * Copyright (C) 2024 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2024-2026 Carlos Garcia Gomez <carlos@facturascripts.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -33,12 +33,14 @@ final class ModTest extends TestCase
 
     public function testPurchasesHeaderHTMLMod(): void
     {
-        new PurchasesHeaderHTMLMod();
+        $mod = new PurchasesHeaderHTMLMod();
+        $this->assertNotEmpty($mod->newModalFields());
     }
 
     public function SalesHeaderHTMLMod(): void
     {
-        new SalesHeaderHTMLMod();
+        $mod = new SalesHeaderHTMLMod();
+        $this->assertNotEmpty($mod->newModalFields());
     }
 
     protected function tearDown(): void
