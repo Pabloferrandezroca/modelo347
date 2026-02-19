@@ -62,7 +62,7 @@ class Txt347Export
             return self::formatString('', 9, ' ', STR_PAD_RIGHT);
         }
 
-        return self::formatString($item['cifnif'], 9, '0', STR_PAD_RIGHT);
+        return self::formatString($item['cifnif'], 9, '0', STR_PAD_LEFT);
     }
 
     protected static function isSpanish(string $codpais): bool
@@ -132,18 +132,18 @@ class Txt347Export
         return '1' // TIPO DE REGISTRO
             . '347' // MODELO DECLARACIÓN
             . date('Y', strtotime(self::$exercise->fechainicio)) // EJERCICIO
-            . self::formatString(self::$company->cifnif, 9, '0', STR_PAD_RIGHT) // NIF DEL DECLARANTE
+            . self::formatString(self::$company->cifnif, 9, '0', STR_PAD_LEFT) // NIF DEL DECLARANTE
             . self::formatString(self::$company->nombre, 40, ' ', STR_PAD_RIGHT) // APELLIDOS Y NOMBRE, RAZÓN SOCIAL O DENOMINACIÓN DEL DECLARANTE
             . 'T' // TIPO DE SOPORTE
-            . self::formatString(self::formatOnlyNumber(self::$company->telefono1), 9, '0', STR_PAD_RIGHT)
-            . self::formatString(self::$company->administrador, 40, ' ', STR_PAD_LEFT) // PERSONA CON QUIÉN RELACIONARSE
-            . self::formatString('', 13, '0', STR_PAD_RIGHT) // NÚMERO IDENTIFICATIVO DE LA DECLARACIÓN
+            . self::formatString(self::formatOnlyNumber(self::$company->telefono1), 9, '0', STR_PAD_LEFT)
+            . self::formatString(self::$company->administrador, 40, ' ', STR_PAD_RIGHT) // PERSONA CON QUIÉN RELACIONARSE
+            . self::formatString('', 13, '0', STR_PAD_LEFT) // NÚMERO IDENTIFICATIVO DE LA DECLARACIÓN
             . self::formatString('', 1, ' ', STR_PAD_LEFT)
             . self::formatString('', 1, ' ', STR_PAD_LEFT) // DECLARACIÓN COMPLEMENTARIA O SUSTITUTIVA
-            . self::formatString('', 13, '0', STR_PAD_RIGHT) // NÚMERO IDENTIFICATIVO DE LA DECLARACIÓN ANTERIOR
+            . self::formatString('', 13, '0', STR_PAD_LEFT) // NÚMERO IDENTIFICATIVO DE LA DECLARACIÓN ANTERIOR
             . self::formatString((string)(count(self::$customersData) + count(self::$suppliersData)), 9, '0', STR_PAD_LEFT) // NÚMERO TOTAL DE PERSONAS Y ENTIDADES
             . self::formatAmount(self::$total, 16, STR_PAD_LEFT) // IMPORTE TOTAL ANUAL DE LAS OPERACIONES
-            . self::formatString('', 9, '0', STR_PAD_RIGHT) // NÚMERO TOTAL DE INMUEBLES
+            . self::formatString('', 9, '0', STR_PAD_LEFT) // NÚMERO TOTAL DE INMUEBLES
             . self::formatAmount(0.00, 16, STR_PAD_LEFT) // IMPORTE TOTAL ANUAL DE LAS OPERACIONES DE ARRENDAMIENTO DE LOCALES DE NEGOCIO
             . self::formatString('', 205, ' ', STR_PAD_LEFT) // BLANCOS
             . self::formatString('', 9, ' ', STR_PAD_RIGHT) // NIF DEL REPRESENTANTE LEGAL
@@ -161,7 +161,7 @@ class Txt347Export
                 . '2' // TIPO DE REGISTRO
                 . '347' // MODELO DECLARACIÓN
                 . date('Y', strtotime(self::$exercise->fechainicio)) // EJERCICIO
-                . self::formatString(self::$company->cifnif, 9, '0', STR_PAD_RIGHT) // NIF DEL DECLARANTE
+                . self::formatString(self::$company->cifnif, 9, '0', STR_PAD_LEFT) // NIF DEL DECLARANTE
                 . self::checkCifNif($item) // NIF DEL DECLARADO
                 . self::formatString('', 9, ' ', STR_PAD_RIGHT) // NIF DEL REPRESENTANTE LEGAL
                 . self::formatString($item['cliente'], 40, ' ', STR_PAD_RIGHT) // APELLIDOS Y NOMBRE, RAZÓN SOCIAL O DENOMINACIÓN DEL DECLARADO
@@ -172,9 +172,9 @@ class Txt347Export
                 . self::formatAmount($item['total'], 16, STR_PAD_LEFT) // IMPORTE ANUAL DE LAS OPERACIONES
                 . ' ' // OPERACIÓN SEGURO
                 . ' ' // ARRENDAMIENTO LOCAL NEGOCIO
-                . self::formatString('', 15, '0', STR_PAD_RIGHT) // IMPORTE PERCIBIDO EN METÁLICO
+                . self::formatString('', 15, '0', STR_PAD_LEFT) // IMPORTE PERCIBIDO EN METÁLICO
                 . self::formatAmount(0.00, 16, STR_PAD_LEFT) // IMPORTE ANUAL PERCIBIDO POR TRANSMISIONES DE INMUEBLES SUJETAS A IVA
-                . self::formatString('', 4, '0', STR_PAD_RIGHT) // EJERCICIO
+                . self::formatString('', 4, '0', STR_PAD_LEFT) // EJERCICIO
                 . self::formatAmount($item['t1'], 16, STR_PAD_LEFT) // IMPORTE DE LAS OPERACIONES PRIMER TRIMESTRE
                 . self::formatAmount(0.00, 16, STR_PAD_LEFT) // IMPORTE PERCIBIDO POR TRANSMISIONES DE INMUEBLES SUJETAS A IVA PRIMER TRIMESTRE
                 . self::formatAmount($item['t2'], 16, STR_PAD_LEFT) // IMPORTE DE LAS OPERACIONES SEGUNDO TRIMESTRE
@@ -412,7 +412,7 @@ class Txt347Export
                 . '2' // TIPO DE REGISTRO
                 . '347' // MODELO DECLARACIÓN
                 . date('Y', strtotime(self::$exercise->fechainicio)) // EJERCICIO
-                . self::formatString(self::$company->cifnif, 9, '0', STR_PAD_RIGHT) // NIF DEL DECLARANTE
+                . self::formatString(self::$company->cifnif, 9, '0', STR_PAD_LEFT) // NIF DEL DECLARANTE
                 . self::checkCifNif($item) // NIF DEL DECLARADO
                 . self::formatString('', 9, ' ', STR_PAD_RIGHT) // NIF DEL REPRESENTANTE LEGAL
                 . self::formatString($item['proveedor'], 40, ' ', STR_PAD_RIGHT) // APELLIDOS Y NOMBRE, RAZÓN SOCIAL O DENOMINACIÓN DEL DECLARADO
@@ -423,9 +423,9 @@ class Txt347Export
                 . self::formatAmount($item['total'], 16, STR_PAD_LEFT) // IMPORTE ANUAL DE LAS OPERACIONES
                 . ' ' // OPERACIÓN SEGURO
                 . ' ' // ARRENDAMIENTO LOCAL NEGOCIO
-                . self::formatString('', 15, '0', STR_PAD_RIGHT) // IMPORTE PERCIBIDO EN METÁLICO
+                . self::formatString('', 15, '0', STR_PAD_LEFT) // IMPORTE PERCIBIDO EN METÁLICO
                 . self::formatAmount(0.00, 16, STR_PAD_LEFT) // IMPORTE ANUAL PERCIBIDO POR TRANSMISIONES DE INMUEBLES SUJETAS A IVA
-                . self::formatString('', 4, '0', STR_PAD_RIGHT) // EJERCICIO
+                . self::formatString('', 4, '0', STR_PAD_LEFT) // EJERCICIO
                 . self::formatAmount($item['t1'], 16, STR_PAD_LEFT) // IMPORTE DE LAS OPERACIONES PRIMER TRIMESTRE
                 . self::formatAmount(0.00, 16, STR_PAD_LEFT) // IMPORTE PERCIBIDO POR TRANSMISIONES DE INMUEBLES SUJETAS A IVA PRIMER TRIMESTRE
                 . self::formatAmount($item['t2'], 16, STR_PAD_LEFT) // IMPORTE DE LAS OPERACIONES SEGUNDO TRIMESTRE
