@@ -19,6 +19,7 @@
 
 namespace FacturaScripts\Plugins\Modelo347\Lib;
 
+use FacturaScripts\Core\DataSrc\Paises;
 use FacturaScripts\Core\Tools;
 use FacturaScripts\Dinamic\Model\Ejercicio;
 use FacturaScripts\Dinamic\Model\Empresa;
@@ -57,12 +58,33 @@ class Txt347Export
 
     protected static function checkCifNif(array $item): string
     {
-        if (strtoupper($item['codpais']) !== 'ES'
-            && false === in_array(strtoupper($item['tipoidfiscal']), ['DNI', 'CIF', 'NIF'])) {
+        if (false === self::isSpanish($item['codpais'] ?? '')) {
             return self::formatString('', 9, ' ', STR_PAD_RIGHT);
         }
 
         return self::formatString($item['cifnif'], 9, '0', STR_PAD_RIGHT);
+    }
+
+    protected static function isSpanish(string $codpais): bool
+    {
+        $pais = Paises::get($codpais);
+        return strtoupper($pais->codiso ?? '') === 'ES';
+    }
+
+    protected static function getNifOperadorComunitario(array $item): string
+    {
+        $codpais = $item['codpais'] ?? '';
+        if (false === self::isSpanish($codpais) && !empty($item['cifnif']) && Paises::miembroUE($codpais)) {
+            $pais = Paises::get($codpais);
+            $countryCode = self::formatString($pais->codiso ?? '', 2, ' ', STR_PAD_RIGHT);
+            $vat = strtoupper(preg_replace('/[^A-Z0-9]/', '', $item['cifnif']));
+            $iso = strtoupper($pais->codiso ?? '');
+            if (!empty($iso) && str_starts_with($vat, $iso)) {
+                $vat = substr($vat, strlen($iso));
+            }
+            return $countryCode . self::formatString($vat, 15, ' ', STR_PAD_RIGHT);
+        }
+        return self::formatString('', 17, ' ', STR_PAD_RIGHT);
     }
 
     protected static function formatAmount(float $amount, int $length, int $align): string
@@ -115,7 +137,7 @@ class Txt347Export
             . self::formatString('', 1, ' ', STR_PAD_LEFT)
             . self::formatString('', 1, ' ', STR_PAD_LEFT) // DECLARACIÓN COMPLEMENTARIA O SUSTITUTIVA
             . self::formatString('', 13, '0', STR_PAD_RIGHT) // NÚMERO IDENTIFICATIVO DE LA DECLARACIÓN ANTERIOR
-            . self::formatString(count(self::$customersData) + count(self::$suppliersData), 9, '0', STR_PAD_RIGHT) // NÚMERO TOTAL DE PERSONAS Y ENTIDADES
+            . self::formatString(count(self::$customersData) + count(self::$suppliersData), 9, '0', STR_PAD_LEFT) // NÚMERO TOTAL DE PERSONAS Y ENTIDADES
             . self::formatAmount(self::$total, 16, STR_PAD_LEFT) // IMPORTE TOTAL ANUAL DE LAS OPERACIONES
             . self::formatString('', 9, '0', STR_PAD_RIGHT) // NÚMERO TOTAL DE INMUEBLES
             . self::formatAmount(0.00, 16, STR_PAD_LEFT) // IMPORTE TOTAL ANUAL DE LAS OPERACIONES DE ARRENDAMIENTO DE LOCALES DE NEGOCIO
@@ -157,12 +179,13 @@ class Txt347Export
                 . self::formatAmount(0.00, 16, STR_PAD_LEFT) // IMPORTE PERCIBIDO POR TRANSMISIONES DE INMUEBLES SUJETAS A IVA TERCER TRIMESTRE
                 . self::formatAmount($item['t4'], 16, STR_PAD_LEFT) // IMPORTE DE LAS OPERACIONES CUARTO TRIMESTRE
                 . self::formatAmount(0.00, 16, STR_PAD_LEFT) // IMPORTE PERCIBIDO POR TRANSMISIONES DE INMUEBLES SUJETAS A IVA CUARTO TRIMESTRE
-                . self::formatString('', 17, ' ', STR_PAD_LEFT) // NIF OPERADOR COMUNITARIO
+                . self::getNifOperadorComunitario($item) // NIF OPERADOR COMUNITARIO
                 . ' ' // OPERACIONES RÉGIMEN ESPECIAL CRITERIO DE CAJA IVA
                 . ' ' // OPERACIÓN CON INVERSIÓN DEL SUJETO PASIVO
                 . ' ' // OPERACIÓN CON BIENES VINCULADOS O DESTINADOS A VINCULARSE AL RÉGIMEN DE DEPÓSITO DISTINTO DEL ADUANERO
-                . self::formatString('', 16, ' ', STR_PAD_LEFT) // IMPORTE ANUAL DE LAS OPERACIONES DEVENGADAS CONFORME AL CRITERIO DE CAJA DEL IVA
-                . self::formatString('', 201, ' ', STR_PAD_LEFT); // BLANCOS
+                . self::formatAmount(0.00, 16, STR_PAD_LEFT) // IMPORTE ANUAL DE LAS OPERACIONES DEVENGADAS CONFORME AL CRITERIO DE CAJA DEL IVA
+                . self::formatString('000000', 6, '0', STR_PAD_LEFT) // NUMERO DE CONVOCATORIA BDNS
+                . self::formatString('', 195, ' ', STR_PAD_LEFT); // BLANCOS
         }
         return $txt;
     }
@@ -405,12 +428,13 @@ class Txt347Export
                 . self::formatAmount(0.00, 16, STR_PAD_LEFT) // IMPORTE PERCIBIDO POR TRANSMISIONES DE INMUEBLES SUJETAS A IVA TERCER TRIMESTRE
                 . self::formatAmount($item['t4'], 16, STR_PAD_LEFT) // IMPORTE DE LAS OPERACIONES CUARTO TRIMESTRE
                 . self::formatAmount(0.00, 16, STR_PAD_LEFT) // IMPORTE PERCIBIDO POR TRANSMISIONES DE INMUEBLES SUJETAS A IVA CUARTO TRIMESTRE
-                . self::formatString('', 17, ' ', STR_PAD_LEFT) // NIF OPERADOR COMUNITARIO
+                . self::getNifOperadorComunitario($item) // NIF OPERADOR COMUNITARIO
                 . ' ' // OPERACIONES RÉGIMEN ESPECIAL CRITERIO DE CAJA IVA
                 . ' ' // OPERACIÓN CON INVERSIÓN DEL SUJETO PASIVO
                 . ' ' // OPERACIÓN CON BIENES VINCULADOS O DESTINADOS A VINCULARSE AL RÉGIMEN DE DEPÓSITO DISTINTO DEL ADUANERO
-                . self::formatString('', 16, ' ', STR_PAD_LEFT) // IMPORTE ANUAL DE LAS OPERACIONES DEVENGADAS CONFORME AL CRITERIO DE CAJA DEL IVA
-                . self::formatString('', 201, ' ', STR_PAD_LEFT); // BLANCOS
+                . self::formatAmount(0.00, 16, STR_PAD_LEFT) // IMPORTE ANUAL DE LAS OPERACIONES DEVENGADAS CONFORME AL CRITERIO DE CAJA DEL IVA
+                . self::formatString('000000', 6, '0', STR_PAD_LEFT) // NUMERO DE CONVOCATORIA BDNS
+                . self::formatString('', 195, ' ', STR_PAD_LEFT); // BLANCOS
         }
         return $txt;
     }
