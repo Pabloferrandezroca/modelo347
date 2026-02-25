@@ -114,11 +114,22 @@ class Txt347Export
         // pasamos el string a mayúsculas
         $string = mb_strtoupper($string, 'UTF-8');
 
-        // limitamos el tamaño del string
+        // limitamos el tamaño del string (por caracteres, no bytes)
         $string = self::limitString($string, $length);
 
         // rellenamos con el carácter indicado hasta el tamaño indicado, según la alineación indicada
-        return str_pad($string, $length, $charter, $align);
+        // usamos mb_strlen para contar caracteres (no bytes) y evitar problemas con ñ, etc.
+        $currentLength = mb_strlen($string, 'UTF-8');
+        $padLength = $length - $currentLength;
+        if ($padLength > 0) {
+            $pad = str_repeat($charter, $padLength);
+            if ($align === STR_PAD_LEFT) {
+                $string = $pad . $string;
+            } else {
+                $string = $string . $pad;
+            }
+        }
+        return $string;
     }
 
     protected static function loadCompany(): void
@@ -447,7 +458,7 @@ class Txt347Export
 
     protected static function limitString(string $string, int $length): string
     {
-        return substr($string, 0, $length);
+        return mb_substr($string, 0, $length, 'UTF-8');
     }
 
     public static function sanitize(?string $txt): string
