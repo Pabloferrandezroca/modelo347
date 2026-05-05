@@ -9,6 +9,22 @@
             document.forms['modelo347'].submit();
         }
 
+        function confirmSendEmails() {
+            const sendtype = document.getElementById('emailSendType').value;
+            const form = document.forms['modelo347'];
+            const actionInput = document.createElement('input');
+            actionInput.type = 'hidden';
+            actionInput.name = 'action';
+            actionInput.value = 'send-emails';
+            form.appendChild(actionInput);
+            const sendtypeInput = document.createElement('input');
+            sendtypeInput.type = 'hidden';
+            sendtypeInput.name = 'sendtype';
+            sendtypeInput.value = sendtype;
+            form.appendChild(sendtypeInput);
+            form.submit();
+        }
+
         function toggleDeclarationType() {
             const type = document.getElementById('declarationtype').value;
             const prevGroup = document.getElementById('justificante-anterior-group');
@@ -135,6 +151,10 @@
                 </div>
                 {# Buttons #}
                 <div class="col-sm-auto">
+                    <button type="button" class="btn btn-success mb-2 me-2" data-bs-toggle="modal"
+                            data-bs-target="#emailConfirmModal">
+                        <i class="fa-solid fa-envelope fa-fw me-1"></i> {{ trans('347-send-email') }}
+                    </button>
                     <div class="btn-group mb-2" role="group">
                         <button type="submit" name="action" value="show" class="btn btn-primary">
                             <i class="fa-solid fa-eye fa-fw me-1"></i> {{ trans('preview') }}
@@ -157,6 +177,34 @@
                 </div>
             </div>
         </form>
+    </div>
+
+    <div class="modal fade" id="emailConfirmModal" tabindex="-1" aria-labelledby="emailConfirmModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="emailConfirmModalLabel">
+                        <i class="fa-solid fa-envelope fa-fw me-1"></i> {{ trans('347-confirm-send') }}
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>{{ trans('347-confirm-send-body') }}</p>
+                    <select id="emailSendType" class="form-select">
+                        <option value="both">{{ trans('customers') }} + {{ trans('suppliers') }}</option>
+                        <option value="customers">{{ trans('customers') }}</option>
+                        <option value="suppliers">{{ trans('suppliers') }}</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">{{ trans('cancel') }}</button>
+                    <button type="button" class="btn btn-primary"
+                            onclick="confirmSendEmails()">{{ trans('send') }}</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <ul class="nav nav-tabs" role="tablist">
