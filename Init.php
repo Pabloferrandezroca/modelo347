@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of Modelo347 plugin for FacturaScripts
- * Copyright (C) 2017-2025 Carlos Garcia Gomez <carlos@facturascripts.com>
+ * Copyright (C) 2017-2026 Carlos Garcia Gomez <carlos@facturascripts.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
@@ -22,6 +22,7 @@ namespace FacturaScripts\Plugins\Modelo347;
 use FacturaScripts\Core\Lib\AjaxForms\PurchasesHeaderHTML;
 use FacturaScripts\Core\Lib\AjaxForms\SalesHeaderHTML;
 use FacturaScripts\Core\Template\InitClass;
+use FacturaScripts\Core\WorkQueue;
 use FacturaScripts\Dinamic\Model\FacturaCliente;
 use FacturaScripts\Dinamic\Model\FacturaProveedor;
 
@@ -43,6 +44,10 @@ final class Init extends InitClass
         // mods
         PurchasesHeaderHTML::addMod(new Mod\PurchasesHeaderHTMLMod());
         SalesHeaderHTML::addMod(new Mod\SalesHeaderHTMLMod());
+
+        // workers
+        WorkQueue::addWorker('Modelo347CustomersEmailWorker', 'Modelo347.SendCustomersEmails');
+        WorkQueue::addWorker('Modelo347SuppliersEmailWorker', 'Modelo347.SendSuppliersEmails');
     }
 
     public function uninstall(): void

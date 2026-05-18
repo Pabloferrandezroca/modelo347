@@ -24,6 +24,7 @@ use FacturaScripts\Core\DataSrc\Ejercicios;
 use FacturaScripts\Core\DataSrc\Empresas;
 use FacturaScripts\Core\Tools;
 use FacturaScripts\Core\Where;
+use FacturaScripts\Core\WorkQueue;
 use FacturaScripts\Dinamic\Lib\Export\XLSExport;
 use FacturaScripts\Dinamic\Model\Cliente;
 use FacturaScripts\Dinamic\Model\Cuenta;
@@ -131,7 +132,76 @@ class Modelo347 extends Controller
             case 'download-txt':
                 $this->downloadTxtAction();
                 break;
+
+            case 'send-emails':
+                $this->sendEmailsAction();
+                break;
         }
+    }
+
+    protected function sendEmailsAction(): void
+    {
+        $sendtype = $this->request->request->get('sendtype', 'both');
+
+        if (in_array($sendtype, ['customers', 'both']) && false === empty($this->customersData)) {
+            $data = [];
+            $sentEmails = [];
+            foreach ($this->customersData as $codcliente => $row) {
+                $cliente = new Cliente();
+                if (false === $cliente->load($codcliente)) {
+                    continue;
+                }
+                $email = $cliente->email;
+                if (empty($email) || isset($sentEmails[$email])) {
+                    continue;
+                }
+                $sentEmails[$email] = true;
+                $data[] = [
+                    'email' => $email,
+                    'name' => $row['cliente'],
+                    'cifnif' => $row['cifnif'],
+                    't1' => $row['t1'],
+                    't2' => $row['t2'],
+                    't3' => $row['t3'],
+                    't4' => $row['t4'],
+                    'total' => $row['total'],
+                ];
+            }
+            if (false === empty($data)) {
+                WorkQueue::send('Modelo347.SendCustomersEmails', $this->codejercicio, ['data' => $data, 'amount' => $this->amount]);
+            }
+        }
+
+        if (in_array($sendtype, ['suppliers', 'both']) && false === empty($this->suppliersData)) {
+            $data = [];
+            $sentEmails = [];
+            foreach ($this->suppliersData as $codproveedor => $row) {
+                $proveedor = new Proveedor();
+                if (false === $proveedor->load($codproveedor)) {
+                    continue;
+                }
+                $email = $proveedor->email;
+                if (empty($email) || isset($sentEmails[$email])) {
+                    continue;
+                }
+                $sentEmails[$email] = true;
+                $data[] = [
+                    'email' => $email,
+                    'name' => $row['proveedor'],
+                    'cifnif' => $row['cifnif'],
+                    't1' => $row['t1'],
+                    't2' => $row['t2'],
+                    't3' => $row['t3'],
+                    't4' => $row['t4'],
+                    'total' => $row['total'],
+                ];
+            }
+            if (false === empty($data)) {
+                WorkQueue::send('Modelo347.SendSuppliersEmails', $this->codejercicio, ['data' => $data, 'amount' => $this->amount]);
+            }
+        }
+
+        Tools::log()->info('347-emails-queued');
     }
 
     protected function checkAddress(array $data, string $type): void
