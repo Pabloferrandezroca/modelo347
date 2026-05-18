@@ -19,8 +19,8 @@
 
 namespace FacturaScripts\Test\Plugins;
 
+use FacturaScripts\Dinamic\Lib\Txt347Export;
 use FacturaScripts\Dinamic\Model\Ejercicio;
-use FacturaScripts\Plugins\Modelo347\Lib\Txt347Export;
 use FacturaScripts\Test\Traits\DefaultSettingsTrait;
 use FacturaScripts\Test\Traits\LogErrorsTrait;
 use PHPUnit\Framework\TestCase;

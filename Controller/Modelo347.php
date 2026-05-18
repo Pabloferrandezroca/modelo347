@@ -25,12 +25,12 @@ use FacturaScripts\Core\DataSrc\Empresas;
 use FacturaScripts\Core\Tools;
 use FacturaScripts\Core\Where;
 use FacturaScripts\Core\WorkQueue;
+use FacturaScripts\Dinamic\Lib\Txt347Export;
 use FacturaScripts\Dinamic\Lib\Export\XLSExport;
 use FacturaScripts\Dinamic\Model\Cliente;
 use FacturaScripts\Dinamic\Model\Cuenta;
 use FacturaScripts\Dinamic\Model\Ejercicio;
 use FacturaScripts\Dinamic\Model\Proveedor;
-use FacturaScripts\Plugins\Modelo347\Lib\Txt347Export;
 
 /**
  * Description of Modelo347
